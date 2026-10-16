@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Главная — PlayPick</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+body{margin:0;background:#0F0E17;color:#F5F3FF;font-family:system-ui,-apple-system,sans-serif;}
+a{color:inherit;text-decoration:none;}
+.nav-link{padding:8px 4px;border-bottom:2px solid transparent;}
+.chip{border:1px solid #3A3550;border-radius:999px;padding:10px 20px;font-size:14px;}
+.btn-primary{background:#39FF88;color:#0F0E17;border:none;border-radius:10px;padding:16px 32px;font-weight:700;font-size:16px;cursor:pointer;}
+</style>
+</head>
+<body>
+<div style="max-width:1280px;margin:0 auto;box-sizing:border-box;display:flex;flex-direction:column;">
+
+  <nav style="display:flex;align-items:center;justify-content:space-between;padding:24px 32px;border-bottom:1px solid #221E35;flex-wrap:wrap;gap:12px;">
+    <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;letter-spacing:-0.02em;">PlayPick</div>
+    <div style="display:flex;gap:32px;font-size:15px;color:#C9C4DC;">
+      <a class="nav-link" style="color:#F5F3FF;border-bottom-color:#39FF88;">Главная</a>
+      <a class="nav-link">Каталог</a>
+      <a class="nav-link">Подписка</a>
+    </div>
+    <div style="background:#1F1B2E;border:1px solid #3A3550;border-radius:8px;padding:10px 18px;font-size:14px;">Войти</div>
+  </nav>
+
+  <section style="padding:64px 32px 48px;display:flex;flex-direction:column;align-items:flex-start;gap:28px;max-width:760px;">
+    <h1 style="font-family:'Space Grotesk',sans-serif;font-size:44px;line-height:1.1;margin:0;font-weight:700;">Не знаешь,<br>во что поиграть?</h1>
+    <p style="font-size:18px;color:#C9C4DC;margin:0;line-height:1.5;">Скажи, сколько у тебя времени и какое настроение — подберём игру и дадим попробовать бесплатно, прежде чем покупать.</p>
+    <div style="display:flex;flex-direction:column;gap:14px;width:100%;">
+      <div style="font-size:13px;color:#8D87A6;text-transform:uppercase;letter-spacing:0.06em;">Сколько времени есть?</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <div class="chip">15 минут</div>
+        <div class="chip" style="background:#39FF88;color:#0F0E17;border-color:#39FF88;">2 часа</div>
+        <div class="chip">Весь вечер</div>
+      </div>
+      <div style="font-size:13px;color:#8D87A6;text-transform:uppercase;letter-spacing:0.06em;margin-top:8px;">Какое настроение?</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <div class="chip">Расслабиться</div>
+        <div class="chip">Азарт</div>
+        <div class="chip">История</div>
+        <div class="chip">С друзьями</div>
+      </div>
+    </div>
+    <button class="btn-primary">Подобрать игру →</button>
+  </section>
+
+  <section style="padding:0 32px 64px;display:flex;flex-direction:column;gap:24px;">
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;">Сейчас популярно</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="background:#4C3B8F;border-radius:14px;height:160px;display:flex;align-items:flex-end;padding:14px;"><div style="background:rgba(15,14,23,0.55);border-radius:6px;padding:4px 10px;font-size:12px;">~2 часа</div></div>
+        <div style="font-weight:600;font-size:15px;">Hollow Light</div><div style="font-size:13px;color:#8D87A6;">Приключение · инди</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="background:#1F6F5C;border-radius:14px;height:160px;display:flex;align-items:flex-end;padding:14px;"><div style="background:rgba(15,14,23,0.55);border-radius:6px;padding:4px 10px;font-size:12px;">15 минут</div></div>
+        <div style="font-weight:600;font-size:15px;">Nightshift Run</div><div style="font-size:13px;color:#8D87A6;">Аркада</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="background:#8F3B5C;border-radius:14px;height:160px;display:flex;align-items:flex-end;padding:14px;"><div style="background:rgba(15,14,23,0.55);border-radius:6px;padding:4px 10px;font-size:12px;">Вечер</div></div>
+        <div style="font-weight:600;font-size:15px;">Driftwood Saga</div><div style="font-size:13px;color:#8D87A6;">RPG · история</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="background:#3B5C8F;border-radius:14px;height:160px;display:flex;align-items:flex-end;padding:14px;"><div style="background:rgba(15,14,23,0.55);border-radius:6px;padding:4px 10px;font-size:12px;">30 минут</div></div>
+        <div style="font-weight:600;font-size:15px;">Party Blocks</div><div style="font-size:13px;color:#8D87A6;">С друзьями</div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="padding:28px 32px;border-top:1px solid #221E35;font-size:13px;color:#6B6585;">© 2026 PlayPick — сервис подбора игр</footer>
+</div>
+</body>
+</html>
