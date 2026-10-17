@@ -12,7 +12,31 @@ a{color:inherit;text-decoration:none;}
 .chip{border:1px solid #3A3550;border-radius:999px;padding:10px 20px;font-size:14px;}
 .btn-primary{background:#39FF88;color:#0F0E17;border:none;border-radius:10px;padding:16px 32px;font-weight:700;font-size:16px;cursor:pointer;}
 </style>
-</head>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=113661542', 'ym');
+
+    ym(113661542, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/113661542" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+<script>
+document.addEventListener('click', function (e) {
+  var el = e.target.closest('button, a, [role="button"]');
+  if (!el || typeof ym !== 'function') return;
+  var t = (el.innerText || el.textContent || '').toLowerCase();
+  ym(113661542, 'reachGoal', 'button_click');
+  if (/пробн|аренд|подпис|оформ|купить|тариф/.test(t)) {
+    ym(113661542, 'reachGoal', 'subscribe_click');
+  }
+});
+</script></head>
 <body>
 <div style="max-width:1280px;margin:0 auto;box-sizing:border-box;display:flex;flex-direction:column;">
 
