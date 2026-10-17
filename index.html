@@ -11,6 +11,21 @@ a{color:inherit;text-decoration:none;}
 .nav-link{padding:8px 4px;border-bottom:2px solid transparent;}
 .chip{border:1px solid #3A3550;border-radius:999px;padding:10px 20px;font-size:14px;}
 .btn-primary{background:#39FF88;color:#0F0E17;border:none;border-radius:10px;padding:16px 32px;font-weight:700;font-size:16px;cursor:pointer;}
+a{cursor:pointer;}
+.chip{cursor:pointer;user-select:none;}
+.chip:hover{border-color:#39FF88;}
+.chip.on{background:#39FF88;color:#0F0E17;border-color:#39FF88;}
+.btn-primary:hover{opacity:.9;}
+.btn-sec{background:transparent;color:#F5F3FF;border:1px solid #3A3550;border-radius:10px;padding:14px 24px;font-weight:600;font-size:15px;cursor:pointer;font-family:inherit;}
+.btn-sec:hover{border-color:#39FF88;}
+.nav-link{cursor:pointer;}
+.nav-link.on{color:#F5F3FF;border-bottom-color:#39FF88;}
+.login{cursor:pointer;}
+.card{background:#171426;border:1px solid #221E35;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;}
+.plan{cursor:pointer;text-align:left;font-family:inherit;color:inherit;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px;background:#171426;border:1px solid #221E35;}
+.plan.on{border:2px solid #39FF88;}
+.view{display:none;}.view.show{display:block;}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#1F1B2E;border:1px solid #39FF88;border-radius:10px;padding:12px 20px;font-size:14px;display:none;z-index:9;}
 </style>
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript">
@@ -46,57 +61,164 @@ document.addEventListener('click', function (e) {
   <nav style="display:flex;align-items:center;justify-content:space-between;padding:24px 32px;border-bottom:1px solid #221E35;flex-wrap:wrap;gap:12px;">
     <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;letter-spacing:-0.02em;">PlayPick</div>
     <div style="display:flex;gap:32px;font-size:15px;color:#C9C4DC;">
-      <a class="nav-link" style="color:#F5F3FF;border-bottom-color:#39FF88;">Главная</a>
-      <a class="nav-link">Каталог</a>
-      <a class="nav-link">Подписка</a>
+      <a class="nav-link on" data-view="home">Главная</a>
+      <a class="nav-link" data-view="catalog">Каталог</a>
+      <a class="nav-link" data-view="plans">Подписка</a>
     </div>
-    <div style="background:#1F1B2E;border:1px solid #3A3550;border-radius:8px;padding:10px 18px;font-size:14px;">Войти</div>
+    <div class="login" id="login" style="background:#1F1B2E;border:1px solid #3A3550;border-radius:8px;padding:10px 18px;font-size:14px;">Войти</div>
   </nav>
 
+  <!-- ГЛАВНАЯ -->
+  <div class="view show" id="v-home">
   <section style="padding:64px 32px 48px;display:flex;flex-direction:column;align-items:flex-start;gap:28px;max-width:760px;">
     <h1 style="font-family:'Space Grotesk',sans-serif;font-size:44px;line-height:1.1;margin:0;font-weight:700;">Не знаешь,<br>во что поиграть?</h1>
     <p style="font-size:18px;color:#C9C4DC;margin:0;line-height:1.5;">Скажи, сколько у тебя времени и какое настроение — подберём игру и дадим попробовать бесплатно, прежде чем покупать.</p>
     <div style="display:flex;flex-direction:column;gap:14px;width:100%;">
       <div style="font-size:13px;color:#8D87A6;text-transform:uppercase;letter-spacing:0.06em;">Сколько времени есть?</div>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;">
-        <div class="chip">15 минут</div>
-        <div class="chip" style="background:#39FF88;color:#0F0E17;border-color:#39FF88;">2 часа</div>
-        <div class="chip">Весь вечер</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;" id="g-time">
+        <div class="chip" data-v="15">15 минут</div>
+        <div class="chip on" data-v="120">2 часа</div>
+        <div class="chip" data-v="evening">Весь вечер</div>
       </div>
       <div style="font-size:13px;color:#8D87A6;text-transform:uppercase;letter-spacing:0.06em;margin-top:8px;">Какое настроение?</div>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;">
-        <div class="chip">Расслабиться</div>
-        <div class="chip">Азарт</div>
-        <div class="chip">История</div>
-        <div class="chip">С друзьями</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;" id="g-mood">
+        <div class="chip" data-v="relax">Расслабиться</div>
+        <div class="chip" data-v="thrill">Азарт</div>
+        <div class="chip" data-v="story">История</div>
+        <div class="chip" data-v="friends">С друзьями</div>
       </div>
     </div>
-    <button class="btn-primary">Подобрать игру →</button>
+    <button class="btn-primary" id="pick">Подобрать игру →</button>
+    <div id="result" style="display:none;width:100%;"></div>
   </section>
 
   <section style="padding:0 32px 64px;display:flex;flex-direction:column;gap:24px;">
     <div style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;">Сейчас популярно</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;">
-      <div style="display:flex;flex-direction:column;gap:12px;">
-        <div style="background:#4C3B8F;border-radius:14px;height:160px;display:flex;align-items:flex-end;padding:14px;"><div style="background:rgba(15,14,23,0.55);border-radius:6px;padding:4px 10px;font-size:12px;">~2 часа</div></div>
-        <div style="font-weight:600;font-size:15px;">Hollow Light</div><div style="font-size:13px;color:#8D87A6;">Приключение · инди</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:12px;">
-        <div style="background:#1F6F5C;border-radius:14px;height:160px;display:flex;align-items:flex-end;padding:14px;"><div style="background:rgba(15,14,23,0.55);border-radius:6px;padding:4px 10px;font-size:12px;">15 минут</div></div>
-        <div style="font-weight:600;font-size:15px;">Nightshift Run</div><div style="font-size:13px;color:#8D87A6;">Аркада</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:12px;">
-        <div style="background:#8F3B5C;border-radius:14px;height:160px;display:flex;align-items:flex-end;padding:14px;"><div style="background:rgba(15,14,23,0.55);border-radius:6px;padding:4px 10px;font-size:12px;">Вечер</div></div>
-        <div style="font-weight:600;font-size:15px;">Driftwood Saga</div><div style="font-size:13px;color:#8D87A6;">RPG · история</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:12px;">
-        <div style="background:#3B5C8F;border-radius:14px;height:160px;display:flex;align-items:flex-end;padding:14px;"><div style="background:rgba(15,14,23,0.55);border-radius:6px;padding:4px 10px;font-size:12px;">30 минут</div></div>
-        <div style="font-weight:600;font-size:15px;">Party Blocks</div><div style="font-size:13px;color:#8D87A6;">С друзьями</div>
-      </div>
+    <div id="popular" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;"></div>
+  </section>
+  </div>
+
+  <!-- КАТАЛОГ -->
+  <div class="view" id="v-catalog">
+  <section style="padding:48px 32px 64px;display:flex;flex-direction:column;gap:24px;">
+    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:32px;margin:0;">Каталог игр</h2>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;" id="cat-filter">
+      <div class="chip on" data-f="all">Все</div>
+      <div class="chip" data-f="15">15 минут</div>
+      <div class="chip" data-f="120">2 часа</div>
+      <div class="chip" data-f="evening">Вечер</div>
+      <div class="chip" data-f="relax">Расслабиться</div>
+      <div class="chip" data-f="thrill">Азарт</div>
+      <div class="chip" data-f="story">История</div>
+      <div class="chip" data-f="friends">С друзьями</div>
+    </div>
+    <div id="catalog" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;"></div>
+  </section>
+  </div>
+
+  <!-- ПОДПИСКА -->
+  <div class="view" id="v-plans">
+  <section style="padding:48px 32px 64px;display:flex;flex-direction:column;gap:24px;max-width:960px;">
+    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:32px;margin:0;">Выберите подписку</h2>
+    <div style="color:#C9C4DC;font-size:15px;">Цены указаны в тенге. Отменить можно в любой момент.</div>
+    <div id="plan-list" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;"></div>
+    <div style="background:#171426;border:1px solid #221E35;border-radius:14px;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+      <div><div style="font-size:13px;color:#8D87A6;">Выбранный план: <span id="sel-name" style="color:#F5F3FF;">Standard</span></div>
+      <div style="font-size:20px;font-weight:700;margin-top:4px;">К оплате сегодня: <span id="sel-price">3500</span> ₸</div></div>
+      <button class="btn-primary" id="checkout">Оформить подписку</button>
     </div>
   </section>
+  </div>
 
   <footer style="padding:28px 32px;border-top:1px solid #221E35;font-size:13px;color:#6B6585;">© 2026 PlayPick — сервис подбора игр</footer>
 </div>
+<div class="toast" id="toast"></div>
+
+<script>
+var GOALID = 113661542;
+function goal(n){ try{ if(typeof ym==='function') ym(GOALID,'reachGoal',n); }catch(e){} }
+function hit(path){ try{ if(typeof ym==='function') ym(GOALID,'hit',path); }catch(e){} }
+var games = [
+  {t:'Hollow Light', g:'Приключение · инди', tl:'~2 часа', time:'120', mood:['relax','story'], price:'Пробно бесплатно', c:'#4C3B8F'},
+  {t:'Nightshift Run', g:'Аркада', tl:'15 минут', time:'15', mood:['thrill'], price:'От 500 ₸ / 3 дня', c:'#1F6F5C'},
+  {t:'Driftwood Saga', g:'RPG · история', tl:'Вечер', time:'evening', mood:['story'], price:'От 1500 ₸ / 3 дня', c:'#8F3B5C'},
+  {t:'Party Blocks', g:'С друзьями', tl:'30 минут', time:'15', mood:['friends'], price:'Пробно бесплатно', c:'#3B5C8F'},
+  {t:'Solar Drift', g:'Гонки', tl:'15 минут', time:'15', mood:['thrill','friends'], price:'От 500 ₸ / 3 дня', c:'#8F6B3B'},
+  {t:'Quiet Harbor', g:'Симулятор', tl:'Вечер', time:'evening', mood:['relax'], price:'От 1200 ₸ / 3 дня', c:'#3B8F7C'}
+];
+var plans = [
+  {id:'lite', n:'Lite', p:1500, d:'10 часов пробного доступа в месяц, базовый подбор игр.'},
+  {id:'standard', n:'Standard', p:3500, d:'Безлимитный пробный доступ, аренда игр со скидкой 20%.'},
+  {id:'pro', n:'Pro', p:7000, d:'Всё из Standard + облачный запуск без скачивания.'}
+];
+function card(x){
+  return '<div class="card"><div style="background:'+x.c+';height:150px;display:flex;align-items:flex-end;padding:14px;"><div style="background:rgba(15,14,23,0.55);border-radius:6px;padding:4px 10px;font-size:12px;">'+x.tl+'</div></div>'+
+  '<div style="padding:14px 16px;display:flex;flex-direction:column;gap:6px;"><div style="font-weight:600;font-size:15px;">'+x.t+'</div><div style="font-size:13px;color:#8D87A6;">'+x.g+'</div><div style="font-size:13px;color:#39FF88;">'+x.price+'</div>'+
+  '<button class="btn-sec trial" style="margin-top:8px;padding:10px 14px;font-size:14px;" data-t="'+x.t+'">Пробный доступ</button></div></div>';
+}
+document.getElementById('popular').innerHTML = games.slice(0,4).map(card).join('');
+function renderCatalog(f){
+  var l = games.filter(function(x){ return f==='all' || x.time===f || x.mood.indexOf(f)>-1; });
+  document.getElementById('catalog').innerHTML = l.length ? l.map(card).join('') : '<div style="color:#8D87A6;">Ничего не найдено</div>';
+}
+renderCatalog('all');
+function renderPlans(sel){
+  document.getElementById('plan-list').innerHTML = plans.map(function(p){
+    return '<button class="plan'+(p.id===sel?' on':'')+'" data-id="'+p.id+'"><div style="font-weight:700;font-size:20px;">'+p.n+'</div><div style="font-size:28px;font-weight:700;">'+p.p+' ₸ <span style="font-size:14px;color:#8D87A6;font-weight:400;">/ мес</span></div><div style="font-size:14px;color:#C9C4DC;line-height:1.5;">'+p.d+'</div><div style="font-size:13px;color:#39FF88;">'+(p.id===sel?'Выбрано':'Выбрать')+'</div></button>';
+  }).join('');
+  var pl = plans.filter(function(p){return p.id===sel;})[0];
+  document.getElementById('sel-name').textContent = pl.n;
+  document.getElementById('sel-price').textContent = pl.p;
+}
+var selPlan='standard'; renderPlans(selPlan);
+
+function toast(m){ var t=document.getElementById('toast'); t.textContent=m; t.style.display='block'; clearTimeout(t._h); t._h=setTimeout(function(){t.style.display='none';},2600); }
+function show(v){
+  document.querySelectorAll('.view').forEach(function(e){e.classList.remove('show');});
+  document.getElementById('v-'+v).classList.add('show');
+  document.querySelectorAll('.nav-link').forEach(function(e){e.classList.toggle('on', e.getAttribute('data-view')===v);});
+  hit('#'+v); window.scrollTo(0,0);
+}
+document.querySelectorAll('.nav-link').forEach(function(a){ a.addEventListener('click', function(){ show(a.getAttribute('data-view')); }); });
+
+function single(id){
+  document.getElementById(id).addEventListener('click', function(e){
+    var c = e.target.closest('.chip'); if(!c) return;
+    var was = c.classList.contains('on');
+    this.querySelectorAll('.chip').forEach(function(x){x.classList.remove('on');});
+    if(!was || id==='g-time') c.classList.add('on');
+  });
+}
+single('g-time'); single('g-mood');
+
+document.getElementById('pick').addEventListener('click', function(){
+  var tm = document.querySelector('#g-time .chip.on'), md = document.querySelector('#g-mood .chip.on');
+  var tv = tm && tm.getAttribute('data-v'), mv = md && md.getAttribute('data-v');
+  var best = games.slice().sort(function(a,b){
+    function s(x){ return (tv && x.time===tv ? 2:0) + (mv && x.mood.indexOf(mv)>-1 ? 2:0); }
+    return s(b)-s(a);
+  })[0];
+  var r = document.getElementById('result');
+  r.style.display='block';
+  r.innerHTML = '<div style="background:#171426;border:1px solid #39FF88;border-radius:14px;padding:20px;display:flex;gap:20px;flex-wrap:wrap;align-items:center;">'+
+    '<div style="width:110px;height:110px;border-radius:12px;background:'+best.c+';"></div>'+
+    '<div style="flex:1;min-width:200px;"><div style="font-size:13px;color:#8D87A6;">Мы подобрали для тебя</div><div style="font-size:22px;font-weight:700;margin:4px 0;">'+best.t+'</div><div style="font-size:14px;color:#C9C4DC;">'+best.g+' · '+best.tl+'</div>'+
+    '<div style="display:flex;gap:12px;margin-top:14px;flex-wrap:wrap;"><button class="btn-primary trial" style="padding:12px 22px;font-size:15px;" data-t="'+best.t+'">Попробовать бесплатно</button><button class="btn-sec rent" data-t="'+best.t+'">Взять в аренду</button></div></div></div>';
+});
+
+document.getElementById('cat-filter').addEventListener('click', function(e){
+  var c = e.target.closest('.chip'); if(!c) return;
+  this.querySelectorAll('.chip').forEach(function(x){x.classList.remove('on');});
+  c.classList.add('on'); renderCatalog(c.getAttribute('data-f'));
+});
+
+document.addEventListener('click', function(e){
+  var t = e.target.closest('.trial'); if(t){ toast('Пробный доступ к «'+t.getAttribute('data-t')+'» открыт'); return; }
+  var r = e.target.closest('.rent'); if(r){ toast('«'+r.getAttribute('data-t')+'» добавлена в аренду'); return; }
+  var p = e.target.closest('.plan'); if(p){ selPlan=p.getAttribute('data-id'); renderPlans(selPlan); return; }
+  if(e.target.closest('#checkout')){ toast('Подписка оформлена (демо)'); return; }
+  if(e.target.closest('#login')){ toast('Вход выполнен (демо)'); return; }
+});
+</script>
 </body>
 </html>
