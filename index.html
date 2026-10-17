@@ -25,18 +25,21 @@ a{color:inherit;text-decoration:none;}
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/113661542" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
-
 <script>
 document.addEventListener('click', function (e) {
-  var el = e.target.closest('button, a, [role="button"]');
-  if (!el || typeof ym !== 'function') return;
-  var t = (el.innerText || el.textContent || '').toLowerCase();
-  ym(113661542, 'reachGoal', 'button_click');
-  if (/пробн|аренд|подпис|оформ|купить|тариф/.test(t)) {
+  if (typeof ym !== 'function') return;
+  var el = e.target.closest('button, a, .chip, .btn-primary, [role="button"], .nav-link') || e.target;
+  var t = (el.innerText || el.textContent || '').trim().toLowerCase();
+  if (!t || t.length > 40) return;
+  if (/подобрать|войти|каталог|главная|подписк|пробн|аренд|оформ|минут|час|вечер|расслаб|азарт|истори|друзь/.test(t)) {
+    ym(113661542, 'reachGoal', 'button_click');
+  }
+  if (/пробн|аренд|подписк|оформ|подобрать/.test(t)) {
     ym(113661542, 'reachGoal', 'subscribe_click');
   }
 });
-</script></head>
+</script>
+</head>
 <body>
 <div style="max-width:1280px;margin:0 auto;box-sizing:border-box;display:flex;flex-direction:column;">
 
